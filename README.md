@@ -9,10 +9,7 @@ B4: npm install
 B1: Git pull origin main
 B2: Git add .
 B3: Git commit -m '......'
-<<<<<<< HEAD
-B4: git push ogirin <branch name>
+B4: git push ogirin <branch name> ( nhánh tên của mình không được push lên nhánh main nha!!! )
 B5: heloo
 B6: hahahah
-=======
-B4: git push ogirin <branch name> ( nhánh tên của mình không được push lên nhánh main nha!!! )
->>>>>>> f49431df69f8fcc68d52e98f28fc9f9a1e5076ae
+
