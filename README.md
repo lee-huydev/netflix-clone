@@ -10,6 +10,5 @@ B1: Git pull origin main
 B2: Git add .
 B3: Git commit -m '......'
 B4: git push ogirin <branch name> ( nhánh tên của mình không được push lên nhánh main nha!!! )
-B5: heloo
-B6: hahahah
+B6: Hello
 
