@@ -1,8 +1,14 @@
+import React from "react";
+import StoryContainer from "./containers/story";
+import FaqsContainer from "./containers/faqs";
 
 function App() {
   return (
-    <h1>Hello Guys</h1>
-  )
+    <>
+      <StoryContainer />
+      <FaqsContainer />
+    </>
+  );
 }
 
 export default App;
