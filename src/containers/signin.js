@@ -42,6 +42,7 @@ const SignInContainer = () => {
          // Handle error
          .catch((error) => {
             setUser({ email: '', password: '' });
+            console.log(error.code)
             handleError(error);
          });
    };

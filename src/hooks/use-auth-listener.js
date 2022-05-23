@@ -6,15 +6,16 @@ export default function useAuthListener() {
       JSON.parse(localStorage.getItem('authUser'))
    );
    useEffect(() => {
-      const listener = onAuthStateChanged(auth, (user) => {
-         if (user) {
-            localStorage.setItem('authUser', JSON.stringify(user));
-            setUser(user);
+      onAuthStateChanged(auth, (userAuth) => {
+         if (userAuth && userAuth.emailVerified) {
+            localStorage.setItem('authUser', JSON.stringify(userAuth));
+            console.log(userAuth);
+            setUser(userAuth);
          } else {
             localStorage.removeItem('userAuth');
             setUser(null);
          }
-        });
+      });
    }, []);
-   return user
+   return user;
 }

@@ -7,6 +7,7 @@ function App() {
    const user = useAuthListener();
    // Check isUser 
    const isUser = user !== null && user.emailVerified;
+  //  console.log(user)
    return (
       <>
          <Routes>
@@ -29,7 +30,7 @@ function App() {
             <Route
                path={BROWSE}
                element={
-                  <ProtectedRoute user={isUser} path={SIGN_UP}>
+                  <ProtectedRoute user={isUser} path={SIGN_IN}>
                      <Browse />
                   </ProtectedRoute>
                }
