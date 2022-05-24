@@ -1,15 +1,22 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import { SignIn, SignUp, Browse } from './pages';
 import { SIGN_UP, SIGN_IN, BROWSE } from './constants';
 import { ProtectedRoute, IsUserRedirect } from './helpers/routes';
-import { useAuthListener } from './hooks';
+import { AuthListener } from './hooks';
+import { useState } from 'react';
+import { RefeshContext } from './contexts/firebase'
 function App() {
-   const user = useAuthListener();
-   // Check isUser 
-   const isUser = user !== null && user.emailVerified;
-  //  console.log(user)
+   const [refesh, setRefesh] = useState(false)
+   // Check isUser
+   const auth = AuthListener()
+   const user = () => { 
+      return auth !== null ? auth : JSON.parse(localStorage.getItem('authUser'))
+   }
+   const userConfirm = user()
+   const isUser = userConfirm !== null && userConfirm.emailVerified;
    return (
       <>
+      <RefeshContext.Provider value={{refesh, setRefesh}}>
          <Routes>
             <Route
                path={SIGN_IN}
@@ -36,6 +43,7 @@ function App() {
                }
             />
          </Routes>
+         </RefeshContext.Provider>
       </>
    );
 }

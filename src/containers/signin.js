@@ -1,7 +1,8 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef, useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, InputPassword } from '../components';
+import { RefeshContext } from '../contexts/firebase'
 import {
    SIGN_UP,
    INVALID_EMAIL,
@@ -9,6 +10,7 @@ import {
    NOT_FOUND,
    BROWSE,
 } from '../constants';
+import { jsonEval } from '@firebase/util';
 const SignInContainer = () => {
    const [user, setUser] = useState({ email: '', password: '' });
    const [type, setType] = useState({ type: 'password', show: 'SHOW' });
@@ -16,6 +18,7 @@ const SignInContainer = () => {
    const inputRef = useRef();
    const isValid = user.password === '' || user.email === '';
    const navigate = useNavigate();
+   const { refesh, setRefesh } = useContext(RefeshContext)
    // Handle Click Show Password
    const handelClick = () => {
       inputRef.current.focus();
@@ -36,13 +39,13 @@ const SignInContainer = () => {
                   'Email is not confirmed, please check your email and confirm it.'
                );
             }
-            setError(null);
+            localStorage.setItem('authUser', JSON.stringify(result.user))
+            setRefesh(!refesh)
             navigate(BROWSE);
          })
          // Handle error
          .catch((error) => {
             setUser({ email: '', password: '' });
-            console.log(error.code)
             handleError(error);
          });
    };

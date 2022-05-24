@@ -4,7 +4,7 @@ import { Link } from 'react-router-dom';
 import { SIGN_IN } from '../constants'
 const Signin = () => {
    return (
-         <SignInContainer />
+         <SignInContainer/>
    );
 };
 
