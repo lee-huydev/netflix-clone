@@ -10,7 +10,6 @@ import {
    NOT_FOUND,
    BROWSE,
 } from '../constants';
-import { jsonEval } from '@firebase/util';
 const SignInContainer = () => {
    const [user, setUser] = useState({ email: '', password: '' });
    const [type, setType] = useState({ type: 'password', show: 'SHOW' });

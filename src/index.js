@@ -5,14 +5,15 @@ import { firebaseApp } from './lib/firebase';
 import 'normalize.css';
 import { GlobalStyles } from './styleGlobal';
 import { BrowserRouter } from 'react-router-dom';
+// import { FirebaseContext } from './contexts/firebase';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
    <React.StrictMode>
       <GlobalStyles />
-      {/* <UserContext.Provider value={{ AuthListener }}> */}
+      {/* <FirebaseContext.Provider value={{ firebaseApp }}> */}
          <BrowserRouter>
             <App />
          </BrowserRouter>
-      {/* </UserContext.Provider> */}
+      {/* </FirebaseContext.Provider> */}
     </React.StrictMode>
 );
