@@ -11,9 +11,9 @@ root.render(
    <React.StrictMode>
       <GlobalStyles />
       {/* <FirebaseContext.Provider value={{ firebaseApp }}> */}
-         <BrowserRouter>
-            <App />
-         </BrowserRouter>
+      <BrowserRouter>
+         <App />
+      </BrowserRouter>
       {/* </FirebaseContext.Provider> */}
-    </React.StrictMode>
+   </React.StrictMode>
 );

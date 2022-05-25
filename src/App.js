@@ -1,6 +1,7 @@
+
 import { Routes, Route } from 'react-router-dom';
-import { SignIn, SignUp, Browse } from './pages';
-import { SIGN_UP, SIGN_IN, BROWSE } from './constants';
+import { SignIn, SignUp, Browse, Home } from './pages';
+import { SIGN_UP, SIGN_IN, BROWSE, HOME } from './constants';
 import { ProtectedRoute, IsUserRedirect } from './helpers/routes';
 import { useAuthListener } from './hooks';
 import { useState } from 'react';
@@ -19,6 +20,7 @@ function App() {
       <>
       <RefeshContext.Provider value={{refesh, setRefesh}}>
          <Routes>
+            <Route path={HOME} element={<Home />} />
             <Route
                path={SIGN_IN}
                element={
