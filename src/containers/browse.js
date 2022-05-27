@@ -123,7 +123,6 @@ const BrowseContainer = ({ film }) => {
                         ref={videoRef}
                         autoPlay
                         loop
-                        muted
                         src="./videos/Dr.mp4"
                      />
                      <Browse.MoreFrame>
@@ -134,8 +133,8 @@ const BrowseContainer = ({ film }) => {
                            the mystic arts.
                         </Browse.TextAbout>
                         <Browse.BtnGroup>
-                           <Link to="/">
-                              <Browse.BtnPlay to="/">
+                           <Link to="">
+                              <Browse.BtnPlay >
                                  <BsPlayFill className="btn-icons" />
                                  Play
                               </Browse.BtnPlay>
