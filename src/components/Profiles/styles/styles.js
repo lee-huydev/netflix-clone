@@ -5,10 +5,8 @@ export const Container = styled.div`
    flex-direction: column;
    justify-content: center;
    align-items: center;
-   margin: auto;
+   margin: 100px auto;
    width: 100%;
-   height: 100vh;
-   background-color: #000000
 `;
 export const Title = styled.h2`
    width: 100%;
@@ -16,6 +14,9 @@ export const Title = styled.h2`
    font-size: 48px;
    text-align: center;
    font-weight: 500;
+   @media (max-width: 1024px) {
+      font-size: 40px;
+   }
 `;
 export const List = styled.ul`
    padding: 0;
@@ -29,6 +30,9 @@ export const Picture = styled.img`
    height: auto;
    border-radius: 8px;
    border: 2px solid black;
+   @media (max-width: 1024px) {
+      max-width: 120px
+   }
 `;
 export const Name = styled.p`
    color: #808080;

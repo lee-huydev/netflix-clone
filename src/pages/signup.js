@@ -1,7 +1,12 @@
 import React from 'react';
-import SignUpContainer from '../containers/signup'
+import SignUpContainer from '../containers/signup';
+import HeaderContainer from '../containers/header';
 const SignUp = () => {
-   return <SignUpContainer />
+   return (
+      <HeaderContainer>
+         <SignUpContainer />
+      </HeaderContainer>
+   );
 };
 
 export default SignUp;

@@ -10,7 +10,7 @@ Profiles.Name = ({ children }) => <Name>{children}</Name>;
 Profiles.Picture = ({ src, ...restProps }) => (
    <Picture
    {...restProps}
-   src={`/images/users/${src}.png`}
+   src={src ?`/images/users/${src}.png` : '/images/misc/Netflix_LoadTime.gif'}
    />
 );
-Profiles.Item = ({ children }) => <Item>{children}</Item>;
+Profiles.Item = ({ children, ...restProps }) => <Item {...restProps}>{children}</Item>;

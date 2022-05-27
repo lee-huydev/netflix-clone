@@ -1,10 +1,11 @@
 import React from 'react';
 import SignInContainer from '../containers/signin';
-import { Link } from 'react-router-dom';
-import { SIGN_IN } from '../constants'
+import HeaderContainer from '../containers/header';
 const Signin = () => {
    return (
-         <SignInContainer/>
+      <HeaderContainer>
+         <SignInContainer />
+      </HeaderContainer>
    );
 };
 

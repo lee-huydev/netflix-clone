@@ -1,41 +1,31 @@
-
 import React, { useState } from 'react';
 import { Link as ReachRouterLink } from 'react-router-dom';
+import { ImSearch } from 'react-icons/im';
 import {
-   Container,
-   Group,
    Background,
+   ButtonLink,
+   Logo,
+   Container,
+   GroupFeature,
    Dropdown,
    Picture,
-   Link,
-   Search,
    Profile,
-   FeatureCallOut,
-   SearchIcon,
-   SearchInput,
-   ButtonLink,
-   PlayButton,
-   Text,
-   Feature,
-   Logo,
+   Search,
+   InputSearch,
+   ProfilesName,
+   Avatar,
+   Li,
+   SignOut,
+   Line,
+   BtnSearch,
 } from './styles/styles';
 
-export default function Header({ bg = true, children, ...restProps }) {
-   return bg ? (
-      <Background data-testid="header-bg" {...restProps}>
-         {children}
-      </Background>
-   ) : (
-      children
-   );
+export default function Header({ bg = true, children }) {
+   return bg ? <Background>{children}</Background> : children;
 }
 
 Header.Frame = function HeaderFrame({ children, ...restProps }) {
    return <Container {...restProps}>{children}</Container>;
-};
-
-Header.Group = function HeaderGroup({ children, ...restProps }) {
-   return <Group {...restProps}>{children}</Group>;
 };
 
 Header.Logo = function HeaderLogo({ to, ...restProps }) {
@@ -46,67 +36,40 @@ Header.Logo = function HeaderLogo({ to, ...restProps }) {
    );
 };
 
+Header.ButtonLink = function HeaderButtonLink({ children, ...restProps }) {
+   return <ButtonLink {...restProps}>{children}</ButtonLink>;
+};
+Header.GroupFeature = ({ children }) => <GroupFeature>{children}</GroupFeature>;
+
+Header.Profile = ({ children }) => <Profile>{children}</Profile>;
+Header.Li = ({ children }) => <Li>{children}</Li>;
+Header.ProfilesName = ({ children }) => <ProfilesName>{children}</ProfilesName>;
+Header.Dropdown = ({ children }) => <Dropdown>{children}</Dropdown>;
+Header.Avatar = ({ children }) => <Avatar>{children}</Avatar>;
+Header.SignOut = ({ children, ...restProps }) => (
+   <SignOut {...restProps}>{children}</SignOut>
+);
+Header.Picture = ({ ...restProps }) => <Picture {...restProps} />;
+Header.Line = () => <Line />;
+
 Header.Search = function HeaderSearch({
    searchTerm,
    setSearchTerm,
    ...restProps
 }) {
    const [searchActive, setSearchActive] = useState(false);
-
    return (
       <Search {...restProps}>
-         <SearchIcon
-            onClick={() => setSearchActive((searchActive) => !searchActive)}
-            data-testid="search-click"
-         >
-            <img src="/images/icons/search.png" alt="Search" />
-         </SearchIcon>
-         <SearchInput
+         <BtnSearch>
+            <ImSearch className="icon-search" onClick={()=> console.log(123123)}/>
+         </BtnSearch>
+         <InputSearch
             value={searchTerm}
             onChange={({ target }) => setSearchTerm(target.value)}
-            placeholder="Search films and series"
-            active={searchActive}
-            data-testid="search-input"
+            placeholder="Search title film..."
          />
       </Search>
    );
 };
 
-Header.Profile = function HeaderProfile({ children, ...restProps }) {
-   return <Profile {...restProps}>{children}</Profile>;
-};
-
-Header.Feature = function HeaderFeature({ children, ...restProps }) {
-   return <Feature>{children}</Feature>;
-};
-
-Header.Picture = function HeaderPicture({ src, ...restProps }) {
-   return <Picture {...restProps} src={`/images/users/${src}.png`} />;
-};
-
-Header.Dropdown = function HeaderDropdown({ children, ...restProps }) {
-   return <Dropdown {...restProps}>{children}</Dropdown>;
-};
-
-Header.TextLink = function HeaderTextLink({ children, ...restProps }) {
-   return <Link {...restProps}>{children}</Link>;
-};
-
-Header.PlayButton = function HeaderPlayButton({ children, ...restProps }) {
-   return <PlayButton {...restProps}>{children}</PlayButton>;
-};
-
-Header.FeatureCallOut = function HeaderFeatureCallOut({
-   children,
-   ...restProps
-}) {
-   return <FeatureCallOut {...restProps}>{children}</FeatureCallOut>;
-};
-
-Header.Text = function HeaderText({ children, ...restProps }) {
-   return <Text {...restProps}>{children}</Text>;
-};
-
-Header.ButtonLink = function HeaderButtonLink({ children, ...restProps }) {
-   return <ButtonLink {...restProps}>{children}</ButtonLink>;
-};
+Header.InputSearch = ({ ...restProps }) => <InputSearch {...restProps} />;
