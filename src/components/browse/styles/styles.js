@@ -33,13 +33,18 @@ export const Picture = styled.img`
 
 export const MoreFrame = styled.div`
    position: relative;
-   top: -600px;
-   left: 200px;
+   top: -650px;
+   left: 130px;
    width: 500px;
    @media (max-width: 1300px) {
       top: -500px;
       width: 400px;
    }
+   @media (min-width:1600px) {
+      top: -700px;
+      left: 150px;
+   }
+
 `;
 
 export const TextAbout = styled.p`

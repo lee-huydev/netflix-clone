@@ -6,12 +6,11 @@ import { getAuth, signOut } from 'firebase/auth';
 import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { RefeshContext } from '../contexts/firebase';
 import SelectProfiles from './profiles';
-import { Loading, Media, Browse, Header } from '../components';
+import { Loading, Media, Browse, Header, Modal } from '../components';
 import { Link } from 'react-router-dom';
 import { HOME } from '../constants';
+import CardContainer from './card';
 const BrowseContainer = ({ film }) => {
-   console.log(film);
-   console.log('re-render')
    //    Log out
    const { refesh, setRefesh } = useContext(RefeshContext);
    const auth = getAuth();
@@ -28,13 +27,13 @@ const BrowseContainer = ({ film }) => {
    const [profile, setProfile] = useState(null);
    const [isLoading, setIsLoading] = useState(true);
    useEffect(() => {
-      const setTime = profile && setTimeout(() => setIsLoading(false), 2000);
+      const setTime = profile && setTimeout(() => setIsLoading(false), 1000);
       return () => clearTimeout(setTime);
    });
    // Firestore
    const [video, setVideo] = useState(null);
    const storage = getStorage();
-   const startRef = ref(storage, 'Videos/Violence/Red Notice.mkv');
+   const startRef = ref(storage, 'Videos/Violence/Dr.mp4');
    useEffect(() => {
       const getVideos = async () => {
          const response = await getDownloadURL(startRef);
@@ -43,23 +42,19 @@ const BrowseContainer = ({ film }) => {
       getVideos().then((data) => setVideo(data));
    }, []);
    const videoRef = useRef(null);
-   const [isPlay, setPlay] = useState(false);
-   useEffect(() => {
-      if (profile) {
-         setTimeout(() => setPlay(true), 5000);
-         console.log('Success');
-      }
-   }, [profile]);
-   useEffect(() => {
-      const listener = window.addEventListener('scroll', () => {
-         document.documentElement.scrollTop >= 500
-            ? videoRef !== null && videoRef.current.pause()
-            : videoRef !== null && videoRef.current.play();
-      });
-      return () => window.removeEventListener('scroll', listener);
-   }, []);
-   // Search 
-   const [searchTerm, setSearchTerm] = useState('')
+   // useEffect(() => {
+   //    const listener = window.addEventListener('scroll', () => {
+   //       document.documentElement.scrollTop >= 500
+   //          ? videoRef.current !== null && videoRef.current.pause()
+   //          : videoRef.current !== null && videoRef.current.play();
+   //    });
+   //    return () => window.removeEventListener('scroll', listener);
+   // }, []);
+   // Search
+   const [searchTerm, setSearchTerm] = useState('');
+   // Modal
+   const [modal, setModal] = useState({ display: false, data: null, img:null });
+   console.log(modal);
    return (
       <Header bg={false}>
          <Header.Frame heightHeader="68px">
@@ -72,7 +67,10 @@ const BrowseContainer = ({ film }) => {
             {profile && (
                <>
                   <Header.GroupFeature>
-                     <Header.Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+                     <Header.Search
+                        searchTerm={searchTerm}
+                        setSearchTerm={setSearchTerm}
+                     />
                      <Header.Profile>
                         <Header.Avatar>
                            <Header.Picture
@@ -93,7 +91,9 @@ const BrowseContainer = ({ film }) => {
                            <Header.Line />
                            <Header.Li>
                               <Link to={HOME}>
-                              <Header.SignOut onClick={handleSignOut}>Sign out of Netflix</Header.SignOut>
+                                 <Header.SignOut onClick={handleSignOut}>
+                                    Sign out of Netflix
+                                 </Header.SignOut>
                               </Link>
                            </Header.Li>
                         </Header.Dropdown>
@@ -109,45 +109,52 @@ const BrowseContainer = ({ film }) => {
                <Loading.Picture src={`/images/users/${profile.photoURL}.png`} />
             </Loading>
          ) : (
-            <Browse>
-               {!isPlay ? (
-                  <>
-                     <Browse.Picture src={'/images/misc/dr.jpg'} />
-                     <Browse.MoreFrame>
-                        <Browse.ImgTitle src={'./images/misc/drr.png'} />
-                     </Browse.MoreFrame>
-                  </>
-               ) : (
-                  <>
-                     <Media
-                        ref={videoRef}
-                        autoPlay
-                        loop
-                        src="./videos/Dr.mp4"
+            <>
+               <Browse>
+                  <Media
+                     ref={videoRef}
+                     autoPlay
+                     loop
+                     muted
+                     poster="./images/misc/dr.jpg"
+                     // src={video}
+                  />
+                  <Browse.MoreFrame>
+                     <Browse.ImgTitle src={'./images/misc/drr.png'} />
+                     <Browse.TextAbout>
+                        While on a journey of physical and spiritual healing, a
+                        brilliant neurosurgeon is drawn into the world of the
+                        mystic arts.
+                     </Browse.TextAbout>
+                     <Browse.BtnGroup>
+                        <Link to="">
+                           <Browse.BtnPlay>
+                              <BsPlayFill className="btn-icons" />
+                              Play
+                           </Browse.BtnPlay>
+                        </Link>
+                        <Browse.BtnInfor>
+                           <AiOutlineInfoCircle className="btn-icons" />
+                           More info
+                        </Browse.BtnInfor>
+                     </Browse.BtnGroup>
+                  </Browse.MoreFrame>
+               </Browse>
+               {film &&
+                  film.film.map((e) => (
+                     <CardContainer
+                        film={e}
+                        key={e.title}
+                        modal={modal}
+                        setModal={setModal}
                      />
-                     <Browse.MoreFrame>
-                        <Browse.ImgTitle src={'./images/misc/drr.png'} />
-                        <Browse.TextAbout>
-                           While on a journey of physical and spiritual healing,
-                           a brilliant neurosurgeon is drawn into the world of
-                           the mystic arts.
-                        </Browse.TextAbout>
-                        <Browse.BtnGroup>
-                           <Link to="">
-                              <Browse.BtnPlay >
-                                 <BsPlayFill className="btn-icons" />
-                                 Play
-                              </Browse.BtnPlay>
-                           </Link>
-                           <Browse.BtnInfor>
-                              <AiOutlineInfoCircle className="btn-icons" />
-                              More info
-                           </Browse.BtnInfor>
-                        </Browse.BtnGroup>
-                     </Browse.MoreFrame>
-                  </>
-               )}
-            </Browse>
+                  ))}
+            </>
+         )}
+         {modal.display && (
+            <Modal>
+               <Modal.Content dataModal={modal} setDataModal={setModal}></Modal.Content>
+            </Modal>
          )}
       </Header>
    );

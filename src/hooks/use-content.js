@@ -10,8 +10,7 @@ export default function useContent(collect) {
             .then(({ docs }) => {
                // each array is object and has method data()
                const allContent = docs.map((contentObj) => ({
-                  ...contentObj.data(),
-                  docId: contentObj.id,
+                  ...contentObj.data()
                }));
                setContent(allContent);
             })
