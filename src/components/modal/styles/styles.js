@@ -102,3 +102,29 @@ export const Frame = styled.div`
       }
    }
 `;
+
+export const AreaPlay = styled.div`
+   position: absolute;
+   top: 65%;
+   left: 48px;
+   z-index: 9999;
+   button {
+      padding: 0 45px 0 15px;
+      border: none;
+      border-radius: 5px;
+      font-size: 20px;
+      font-weight: bold;
+      display: flex;
+      cursor: pointer;
+      align-items: center;
+      user-select: none;
+      transition: opacity .1s ease-in-out;
+      .btn-icons {
+         font-size: 40px;
+         margin-right: 5px;
+      }
+      &:hover {
+         opacity: 0.8;
+      }
+   }
+`;

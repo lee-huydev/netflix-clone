@@ -9,4 +9,5 @@ export { default as Feature } from './feature';
 export { default as Browse } from './browse';
 export { default as Card } from './card'
 export {default as Modal} from './modal'
+export { default as Player } from './watch'
 export { Media } from './browse';

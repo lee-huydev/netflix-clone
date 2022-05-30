@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { HOME } from '../constants';
 import CardContainer from './card';
 const BrowseContainer = ({ film }) => {
-   //    Log out
+   //    Log out account
    const { refesh, setRefesh } = useContext(RefeshContext);
    const auth = getAuth();
    const handleSignOut = () => {
@@ -25,7 +25,16 @@ const BrowseContainer = ({ film }) => {
    };
    //    Profile
    const [profile, setProfile] = useState(null);
+   // Back from watch not choose profile
+   profile !== null && localStorage.setItem('profile', JSON.stringify(profile))
+   useEffect(() => {
+      if(localStorage.getItem('profile')){
+         setProfile(JSON.parse(localStorage.getItem('profile')))
+      }
+   }, [])
+   // Loading
    const [isLoading, setIsLoading] = useState(true);
+   // Set time loading when choose profile and then to page browse
    useEffect(() => {
       const setTime = profile && setTimeout(() => setIsLoading(false), 1000);
       return () => clearTimeout(setTime);
@@ -34,13 +43,13 @@ const BrowseContainer = ({ film }) => {
    const [video, setVideo] = useState(null);
    const storage = getStorage();
    const startRef = ref(storage, 'Videos/Violence/Dr.mp4');
-   useEffect(() => {
-      const getVideos = async () => {
-         const response = await getDownloadURL(startRef);
-         return response;
-      };
-      getVideos().then((data) => setVideo(data));
-   }, []);
+   // useEffect(() => {
+   //    const getVideos = async () => {
+   //       const response = await getDownloadURL(startRef);
+   //       return response;
+   //    };
+   //    getVideos().then((data) => setVideo(data));
+   // }, []);
    const videoRef = useRef(null);
    // useEffect(() => {
    //    const listener = window.addEventListener('scroll', () => {
@@ -52,7 +61,7 @@ const BrowseContainer = ({ film }) => {
    // }, []);
    // Search
    const [searchTerm, setSearchTerm] = useState('');
-   // Modal
+   // Set data Modal in browse
    const [modal, setModal] = useState({ display: false, data: null, img:null });
    console.log(modal);
    return (
