@@ -1,4 +1,8 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import { DataVideoContext } from '../../contexts/firebase';
+import { writeFilmName, updateTimeCurrentVideo, useGetFilmName } from '../../helpers/firebase-database';
+import { WATCH } from '../../constants';
 import {
    Container,
    Button,
@@ -8,7 +12,7 @@ import {
    DescriptionBtn,
 } from './styles/styled';
 import { scrollCard } from '../../helpers/scroll-card';
-import { getImages } from '../../helpers/get-content-firestore';
+import { getImages, getVideo } from '../../helpers/get-content-firestore';
 export default function Card({ children, ...restProps }) {
    return <Container {...restProps}>{children}</Container>;
 }
@@ -53,14 +57,36 @@ Card.Slider = function CardSlider({ children, ...restProps }) {
    );
 };
 
-Card.Item = function CardItem({data, modal, setModal, children, ...restProps }) {
+Card.Item = function CardItem({
+   data,
+   modal,
+   profile,
+   setModal,
+   children,
+   userCurrent,
+   ...restProps
+}) {
    const [img, setImg] = useState(null);
+   const { setDataPlayVideo } = useContext(DataVideoContext);
+   const [video, setVideo] = useState(null);
    const [like, setLike] = useState({ like: false, dislike: false });
+   const navigate = useNavigate();
    getImages(data.genre, data.img).then((e) => setImg(e));
    const handleMore = (data, img) => {
-      setModal({...modal, display: true, data, img})
-      document.body.style.overflow='hidden'
+      setModal({ ...modal, display: true, data, img });
+      document.body.style.overflow = 'hidden';
    };
+   const handlePlay = (data, img) => {
+      setDataPlayVideo({ data, img, profile, uid: userCurrent.uid });
+      writeFilmName(data.title, userCurrent.uid, profile.displayName);
+      document.body.style.overflow = 'visible';
+      navigate(WATCH);
+   };
+   // useGetFilmName(userCurrent.uid, profile.displayName)
+   // const handlePlus = () => {
+   //    console.log('Success')
+   //    updateTimeCurrentVideo(userCurrent.uid, data.title, 10, profile.displayName)
+   // }
    return (
       <Item {...restProps} className="movie">
          {img ? (
@@ -70,10 +96,10 @@ Card.Item = function CardItem({data, modal, setModal, children, ...restProps }) 
          )}
          <div className="description">
             <div className="description-button-frame">
-               <DescriptionBtn>
+               <DescriptionBtn onClick={() => handlePlay(data, img)}>
                   <i className="fas fa-play"></i>
                </DescriptionBtn>
-               <DescriptionBtn>
+               <DescriptionBtn >
                   <i className="fas fa-plus"></i>
                </DescriptionBtn>
                <DescriptionBtn

@@ -3,14 +3,15 @@ import { BsPlayFill } from 'react-icons/bs';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { IoMdArrowDropdown } from 'react-icons/io';
 import { getAuth, signOut } from 'firebase/auth';
-import { getStorage, ref, getDownloadURL } from 'firebase/storage';
 import { RefeshContext } from '../contexts/firebase';
 import SelectProfiles from './profiles';
 import { Loading, Media, Browse, Header, Modal } from '../components';
 import { Link } from 'react-router-dom';
 import { HOME } from '../constants';
 import CardContainer from './card';
-const BrowseContainer = ({ film }) => {
+import { getVideo } from '../helpers/get-content-firestore';
+import { useGetFilmName } from '../helpers/firebase-database';
+const BrowseContainer = ({ film, userCurrent }) => {
    //    Log out account
    const { refesh, setRefesh } = useContext(RefeshContext);
    const auth = getAuth();
@@ -19,6 +20,7 @@ const BrowseContainer = ({ film }) => {
          .then(() => {
             console.log('Success fully');
             localStorage.removeItem('authUser');
+            localStorage.removeItem('profile')
             setRefesh(!refesh);
          })
          .catch((error) => console.log(error.code));
@@ -26,12 +28,12 @@ const BrowseContainer = ({ film }) => {
    //    Profile
    const [profile, setProfile] = useState(null);
    // Back from watch not choose profile
-   profile !== null && localStorage.setItem('profile', JSON.stringify(profile))
+   profile !== null && localStorage.setItem('profile', JSON.stringify(profile));
    useEffect(() => {
-      if(localStorage.getItem('profile')){
-         setProfile(JSON.parse(localStorage.getItem('profile')))
+      if (localStorage.getItem('profile')) {
+         setProfile(JSON.parse(localStorage.getItem('profile')));
       }
-   }, [])
+   }, []);
    // Loading
    const [isLoading, setIsLoading] = useState(true);
    // Set time loading when choose profile and then to page browse
@@ -39,31 +41,47 @@ const BrowseContainer = ({ film }) => {
       const setTime = profile && setTimeout(() => setIsLoading(false), 1000);
       return () => clearTimeout(setTime);
    });
-   // Firestore
+   // Firestore get video
    const [video, setVideo] = useState(null);
-   const storage = getStorage();
-   const startRef = ref(storage, 'Videos/Violence/Dr.mp4');
-   // useEffect(() => {
-   //    const getVideos = async () => {
-   //       const response = await getDownloadURL(startRef);
-   //       return response;
-   //    };
-   //    getVideos().then((data) => setVideo(data));
-   // }, []);
+   useEffect(() => {
+      getVideo('Violence', 'Dr', 'mp4').then((data) => setVideo(data));
+   }, []);
    const videoRef = useRef(null);
-   // useEffect(() => {
-   //    const listener = window.addEventListener('scroll', () => {
-   //       document.documentElement.scrollTop >= 500
-   //          ? videoRef.current !== null && videoRef.current.pause()
-   //          : videoRef.current !== null && videoRef.current.play();
-   //    });
-   //    return () => window.removeEventListener('scroll', listener);
-   // }, []);
+   // Feature play or pause video intro when scroll
+   useEffect(() => {
+      const listener = window.addEventListener('scroll', () => {
+         document.documentElement.scrollTop >= 500
+            ? videoRef.current !== null && videoRef.current.pause()
+            : videoRef.current !== null && videoRef.current.play();
+      });
+      return () => window.removeEventListener('scroll', listener);
+   }, []);
    // Search
    const [searchTerm, setSearchTerm] = useState('');
    // Set data Modal in browse
-   const [modal, setModal] = useState({ display: false, data: null, img:null });
-   console.log(modal);
+   const [modal, setModal] = useState({
+      display: false,
+      data: null,
+      img: null,
+   });
+   // Set video access recently
+   const { allFilmName } =  useGetFilmName(userCurrent.uid, profile && profile.displayName); // Get from fire database
+   const [dataTemp, setDataTemp] = useState(''); // Variable data temporary
+   const [contentRender, setContentRender] = useState(null) // Data render after handle
+   useEffect(() => {
+      if (film && allFilmName) {
+         const allFilm = film.film.map((e) => e.data).flat(Infinity) // Make flat array film
+         allFilmName.forEach(e => {
+            allFilm.forEach(d => d.title === e && setDataTemp(prev => [...prev, d]))
+         })
+      }
+   }, [film, allFilmName]);
+   useEffect(() => {
+      if(dataTemp) {
+         const newValue = new Set(dataTemp) // Filter elem exist when call useEffect 2 times when film changes
+         setContentRender([{title: 'Continue Watching for', data: [...newValue]}])
+      }
+   },[dataTemp])
    return (
       <Header bg={false}>
          <Header.Frame heightHeader="68px">
@@ -124,7 +142,6 @@ const BrowseContainer = ({ film }) => {
                      ref={videoRef}
                      autoPlay
                      loop
-                     muted
                      poster="./images/misc/dr.jpg"
                      // src={video}
                   />
@@ -149,20 +166,39 @@ const BrowseContainer = ({ film }) => {
                      </Browse.BtnGroup>
                   </Browse.MoreFrame>
                </Browse>
+               {contentRender &&
+                  contentRender.map((e) => (
+                     <CardContainer
+                        film={e}
+                        profile={profile}
+                        displayName={profile.displayName}
+                        key={e.title}
+                        modal={modal}
+                        setModal={setModal}
+                        userCurrent={userCurrent}
+                     />
+                  ))}
                {film &&
                   film.film.map((e) => (
                      <CardContainer
                         film={e}
                         key={e.title}
+                        profile={profile}
                         modal={modal}
                         setModal={setModal}
+                        userCurrent={userCurrent}
                      />
                   ))}
             </>
          )}
          {modal.display && (
             <Modal>
-               <Modal.Content dataModal={modal} setDataModal={setModal}></Modal.Content>
+               <Modal.Content
+                  dataModal={modal}
+                  setDataModal={setModal}
+                  profile={profile}
+                  userCurrent={userCurrent}
+               ></Modal.Content>
             </Modal>
          )}
       </Header>

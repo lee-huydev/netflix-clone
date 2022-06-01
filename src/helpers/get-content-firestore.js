@@ -8,9 +8,9 @@ export const getImages = async(genre, name) => {
     return await response
 }
 
-export const getVideo = async(genre, name) => {
+export const getVideo = async(genre, name, type='mkv') => {
     const storage = getStorage()
-    const startRef = ref(storage, `Videos/${genre}/${name}.mkv`)
+    const startRef = ref(storage, `Videos/${genre}/${name}.${type}`)
     const response = await getDownloadURL(startRef)
     return await response
 }

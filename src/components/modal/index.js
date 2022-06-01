@@ -1,5 +1,6 @@
 import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { writeFilmName } from '../../helpers/firebase-database'
 import { WATCH } from '../../constants'
 import { DataVideoContext } from '../../contexts/firebase';
 import { BsPlayFill } from 'react-icons/bs';
@@ -16,18 +17,20 @@ export default function Modal({ children, ...restProps }) {
    return <Container {...restProps}>{children}</Container>;
 }
 
-Modal.Content = function ModalContent({ dataModal, setDataModal }) {
-   const { dataPlayVideo, setDataPlayVideo } = useContext(DataVideoContext)
+Modal.Content = function ModalContent({ dataModal, setDataModal, profile, userCurrent }) {
+   const { setDataPlayVideo } = useContext(DataVideoContext)
    const [video, setVideo] = useState(null);
    const { data, img } = dataModal;
+   console.log(data)
    const navigate = useNavigate()
-   getVideo(data.genre, data.title).then((e) => setVideo(e));
+   // getVideo(data.genre, data.title, 'mkv').then((e) => setVideo(e));
    const handleClick = () => {
       setDataModal({ ...dataModal, img: null, data: null, display: false });
       document.body.style.overflow = 'visible';
    };
    const handlePlay = () => {
-      setDataPlayVideo({img, video})
+      setDataPlayVideo({img, data, profile,  videoModal: video, uid: userCurrent.uid})
+      writeFilmName(data.title, userCurrent.uid, profile.displayName);
       navigate(WATCH)
       document.body.style.overflow='visible'
    }
