@@ -10,4 +10,6 @@ export { default as Browse } from './browse';
 export { default as Card } from './card'
 export {default as Modal} from './modal'
 export { default as Player } from './watch'
+export { default as Verify } from './verified'
+export { default as Admin } from './admin' 
 export { Media } from './browse';

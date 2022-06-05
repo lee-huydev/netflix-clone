@@ -30,7 +30,7 @@ export const Container = styled.div`
 export const ButtonLink = styled(RouterLink)`
    display: block;
    background-color: #e50914;
-   width: 84px;
+   width: fit-content;
    height: fit-content;
    color: white;
    border: 0;
@@ -68,6 +68,14 @@ export const GroupFeature = styled.div`
    display: flex;
    align-items: center;
    justify-content: flex-end;
+   .icon-admin {
+      color: #fff;
+      font-size: 24px;
+      display: flex;
+      align-items: center;
+      margin-left: 20px;
+      cursor: pointer;
+   }
 `;
 export const Picture = styled.img`
    width: 100%;
@@ -100,8 +108,16 @@ export const Li = styled.div`
    align-items: center;
    justify-content: flex-start;
    padding: 5px 10px;
+  &:hover {
+   cursor: pointer;
+   text-decoration: underline;
+   text-decoration-color: #fff;
+  }
    a {
       text-decoration: none;
+   }
+   .icon-edit{
+      color: #fff;
    }
 `;
 export const Avatar = styled.div`
@@ -168,6 +184,7 @@ export const InputSearch = styled.input`
    font-weight: 400;
    color: #fff;
    font-size: 15px;
+   margin-right: 20px;
    &:focus {
       width: 350px;
       transition: all 500ms cubic-bezier(0, 0.11, 0.35, 2);

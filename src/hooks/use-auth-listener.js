@@ -7,7 +7,7 @@ export default function useAuthListener() {
    );
    useEffect(() => {
    const listener = onAuthStateChanged(auth, (userAuth) => {
-         if (userAuth && userAuth.emailVerified) {
+         if (userAuth) {
             localStorage.setItem('authUser', JSON.stringify(userAuth));
             setUser(userAuth);
          } else {

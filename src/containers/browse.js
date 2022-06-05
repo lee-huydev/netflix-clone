@@ -1,17 +1,20 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
-import { BsPlayFill } from 'react-icons/bs';
+import { BsPlayFill, BsPencil } from 'react-icons/bs';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { IoMdArrowDropdown } from 'react-icons/io';
+import { FaUserCheck } from 'react-icons/fa'
 import { getAuth, signOut } from 'firebase/auth';
 import { RefeshContext } from '../contexts/firebase';
 import SelectProfiles from './profiles';
 import { Loading, Media, Browse, Header, Modal } from '../components';
-import { Link } from 'react-router-dom';
-import { HOME } from '../constants';
+import { Link, useNavigate } from 'react-router-dom';
+import { ADMIN, HOME } from '../constants';
 import CardContainer from './card';
 import { getVideo } from '../helpers/get-content-firestore';
-import { useGetFilmName } from '../helpers/firebase-database';
-const BrowseContainer = ({ film, userCurrent }) => {
+import { useGetFilmName, getUserChild, useGetAdmin } from '../helpers/firebase-database';
+import { updateStatus } from '../helpers/firebase-auth'
+const BrowseContainer = ({ film, userCurrent, isUser }) => {
+   const navigate = useNavigate()
    //    Log out account
    const { refesh, setRefesh } = useContext(RefeshContext);
    const auth = getAuth();
@@ -65,7 +68,7 @@ const BrowseContainer = ({ film, userCurrent }) => {
       img: null,
    });
    // Set video access recently
-   const { allFilmName } =  useGetFilmName(userCurrent.uid, profile && profile.displayName); // Get from fire database
+   const { allFilmName } =  useGetFilmName( userCurrent.uid, profile && profile.displayName); // Get from fire database
    const [dataTemp, setDataTemp] = useState(''); // Variable data temporary
    const [contentRender, setContentRender] = useState(null) // Data render after handle
    useEffect(() => {
@@ -82,6 +85,32 @@ const BrowseContainer = ({ film, userCurrent }) => {
          setContentRender([{title: 'Continue Watching for', data: [...newValue]}])
       }
    },[dataTemp])
+   // Get all userchild render option header
+   const [alluserChild, setAllUserChild] = useState(null)
+   useEffect(() => {
+      const alUser = getUserChild(userCurrent.uid)
+      setAllUserChild(alUser)
+   }, [])
+   // Navigate manage profiles
+   const handleManageProfiles = () => {
+      console.log('Success')
+      navigate(HOME)
+      localStorage.removeItem('profile')
+   }
+   // Change Profile when click on profile option header
+   const changeProfile = (displayName, photoURL, id) => {
+      window.location.reload()
+      setProfile({
+         displayName,
+         photoURL,
+         id: id || null,
+      })
+   }
+   // Firebase admin
+   const admin = useGetAdmin(userCurrent.uid)
+   if(isUser) {
+      updateStatus(isUser, userCurrent.email)
+   }
    return (
       <Header bg={false}>
          <Header.Frame heightHeader="68px">
@@ -98,6 +127,7 @@ const BrowseContainer = ({ film, userCurrent }) => {
                         searchTerm={searchTerm}
                         setSearchTerm={setSearchTerm}
                      />
+                     {admin && <FaUserCheck className='icon-admin' onClick={() => navigate(ADMIN, {state: {admin: admin}})}/>}
                      <Header.Profile>
                         <Header.Avatar>
                            <Header.Picture
@@ -109,10 +139,26 @@ const BrowseContainer = ({ film, userCurrent }) => {
                            <IoMdArrowDropdown className="icon-drop" />
                            <Header.Li>
                               <Header.Picture
-                                 src={`/images/users/${profile.photoURL}.png`}
+                                 src={`/images/users/${userCurrent.photoURL}.png`}
                               />
-                              <Header.ProfilesName>
-                                 {profile.displayName}
+                              <Header.ProfilesName onClick={() => changeProfile(userCurrent.displayName, userCurrent.photoURL)}>
+                                 {userCurrent.displayName}
+                              </Header.ProfilesName>
+                           </Header.Li>
+                           {alluserChild && alluserChild.map(e => (
+                              <Header.Li key={e.id}>
+                              <Header.Picture
+                                 src={`/images/users/${e.photoURL}.png`}
+                              />
+                              <Header.ProfilesName onClick={() => changeProfile(e.displayName, e.photoURL, e.id)}>
+                                 {e.displayName}
+                              </Header.ProfilesName>
+                           </Header.Li>
+                           ))}
+                           <Header.Li >
+                           <BsPencil className="icon-edit" />
+                              <Header.ProfilesName onClick={handleManageProfiles}>
+                                 Manage Profiles
                               </Header.ProfilesName>
                            </Header.Li>
                            <Header.Line />

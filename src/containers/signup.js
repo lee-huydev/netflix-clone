@@ -2,6 +2,7 @@ import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Form, InputPassword } from '../components';
 import { SIGN_IN, INVALID_EMAIL, EMAIL_EXIST, PASS_WEAK } from '../constants';
+import { writeListUser } from '../helpers/firebase-auth'
 import {
    getAuth,
    createUserWithEmailAndPassword,
@@ -38,17 +39,18 @@ const SignUpContainer = () => {
       // Create an new user
       createUserWithEmailAndPassword(auth, user.email, user.password)
          // Then send email verify
-         .then(() => {
-            sendEmailVerification(auth.currentUser);
-         })
+         // .then(() => {
+         //    sendEmailVerification(auth.currentUser);
+         // })
          // Then update profile and navigate page
          .then(() => {
-            navigate(SIGN_IN);
             updateProfile(auth.currentUser, {
                displayName: user.firstname,
                photoURL: Math.floor(Math.random() * 5) + 1, // Random avatar from 1 to 5 picture
             });
             setError(null);
+            writeListUser();
+            navigate(SIGN_IN);
          })
          .catch((error) => {
             handleError(error);

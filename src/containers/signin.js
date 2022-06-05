@@ -9,6 +9,7 @@ import {
    WRONG_PASS,
    NOT_FOUND,
    BROWSE,
+   VERIFIED
 } from '../constants';
 const SignInContainer = () => {
    const [user, setUser] = useState({ email: '', password: '' });
@@ -34,9 +35,7 @@ const SignInContainer = () => {
          // Then check email verified yet? if email verified then navigate to browse
          .then((result) => {
             if (!result.user.emailVerified) {
-               return setError(
-                  'Email is not confirmed, please check your email and confirm it.'
-               );
+               return navigate(VERIFIED)
             }
             localStorage.setItem('authUser', JSON.stringify(result.user))
             setRefesh(!refesh)

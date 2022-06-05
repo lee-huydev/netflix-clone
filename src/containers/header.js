@@ -9,6 +9,7 @@ export default function HeaderContainer({
    showSignin = false,
    sizeLogo,
    heightHeader = '100px',
+   contentSigin = 'Sign in'
 }) {
    const auth = useAuthListener() || {}
    return (
@@ -21,7 +22,7 @@ export default function HeaderContainer({
                sizeLogo={sizeLogo}
             />
             {showSignin && (
-               <Header.ButtonLink to={SIGN_IN}>Sign In</Header.ButtonLink>
+               <Header.ButtonLink to={SIGN_IN}>{contentSigin}</Header.ButtonLink>
             )}
          </Header.Frame>
          {children}

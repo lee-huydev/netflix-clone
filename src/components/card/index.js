@@ -71,7 +71,7 @@ Card.Item = function CardItem({
    const [video, setVideo] = useState(null);
    const [like, setLike] = useState({ like: false, dislike: false });
    const navigate = useNavigate();
-   getImages(data.genre, data.img).then((e) => setImg(e));
+   // getImages(data.genre, data.img).then((e) => setImg(e));
    const handleMore = (data, img) => {
       setModal({ ...modal, display: true, data, img });
       document.body.style.overflow = 'hidden';

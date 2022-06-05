@@ -42,8 +42,8 @@ Header.ButtonLink = function HeaderButtonLink({ children, ...restProps }) {
 Header.GroupFeature = ({ children }) => <GroupFeature>{children}</GroupFeature>;
 
 Header.Profile = ({ children }) => <Profile>{children}</Profile>;
-Header.Li = ({ children }) => <Li>{children}</Li>;
-Header.ProfilesName = ({ children }) => <ProfilesName>{children}</ProfilesName>;
+Header.Li = ({ children, restProps }) => <Li {...restProps}>{children}</Li>;
+Header.ProfilesName = ({ children, ...restProps }) => <ProfilesName {...restProps}>{children}</ProfilesName>;
 Header.Dropdown = ({ children }) => <Dropdown>{children}</Dropdown>;
 Header.Avatar = ({ children }) => <Avatar>{children}</Avatar>;
 Header.SignOut = ({ children, ...restProps }) => (
