@@ -36,8 +36,7 @@ export const Slider = styled.div`
    overflow-x: scroll;
    white-space: nowrap;
    position: relative;
-   overflow: -moz-scrollbars-none;
-   -ms-overflow-style: none;
+   scrollbar-width: none; // moz
    &::-webkit-scrollbar {
       width: 0;
       display: none;
@@ -158,4 +157,3 @@ export const DescriptionBtn = styled.div`
       margin-right: 0;
    }
 `;
-

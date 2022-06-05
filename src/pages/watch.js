@@ -4,9 +4,10 @@ import { BsArrowLeft } from 'react-icons/bs'
 import { BROWSE } from '../constants'
 import { Player } from '../components';
 import { getVideo } from '../helpers/get-content-firestore';
-import { updateTimeCurrentVideo, useGetFilmName, useGetTime } from '../helpers/firebase-database';
+import { updateTimeCurrentVideo, useGetTime } from '../helpers/firebase-database';
 const Watch = ({ dataPlay  }) => {
   const { img, videoModal, data, profile, uid } = dataPlay
+  console.log('Sucess')
   const [videoSlider, setvideo] = useState(null)
   useEffect(() => {
     !videoModal && getVideo(data.genre, data.title).then(e => setvideo(e))
@@ -15,7 +16,8 @@ const Watch = ({ dataPlay  }) => {
   const btnRef= useRef(null)
   const navigate = useNavigate()
   useEffect(() => {
-    videoRef.current.webkitRequestFullScreen()
+    const isFirefox = typeof InstallTrigger !== 'undefined';
+    isFirefox ? videoRef.current.mozRequestFullScreen() : videoRef.current.webkitRequestFullScreen()
   }, [])
   useEffect(() => {
     const listen = videoRef.current.addEventListener('pause', () => {

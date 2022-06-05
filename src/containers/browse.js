@@ -10,11 +10,12 @@ import { RefeshContext } from '../contexts/firebase';
 import SelectProfiles from './profiles';
 import { Loading, Media, Browse, Header, Modal } from '../components';
 import { Link, useNavigate } from 'react-router-dom';
-import { ADMIN, HOME } from '../constants';
+import { ADMIN, HOME, WATCH } from '../constants';
 import CardContainer from './card';
 import { getVideo } from '../helpers/get-content-firestore';
-import { useGetFilmName, getUserChild, useGetAdmin } from '../helpers/firebase-database';
+import { useGetFilmName, getUserChild, useGetAdmin, writeFilmName } from '../helpers/firebase-database';
 import { updateStatus } from '../helpers/firebase-auth'
+import { DataVideoContext } from '../contexts/firebase';
 const BrowseContainer = ({ film, userCurrent, isUser }) => {
    const [filmRender, setfilmRender] = useState(null)
    useEffect(() => {
@@ -131,6 +132,18 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
    if(isUser) {
       updateStatus(isUser, userCurrent.email)
    }
+   // Play video intro
+   const { setDataPlayVideo } = useContext(DataVideoContext)
+   const handlePlay = () => {
+      const data = {
+         title: 'Dr',
+         genre: 'Fantasy Movies'
+      }
+      setDataPlayVideo({img: "./images/misc/dr.jpg", data, profile ,  videoModal: video, uid: userCurrent.uid});
+      writeFilmName(data.title, userCurrent.uid, profile.displayName);
+      navigate(WATCH, {replace: true})
+      console.log(123)
+   }
    return (
       <>
       <Header bg={false}>
@@ -220,12 +233,10 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
                         mystic arts.
                      </Browse.TextAbout>
                      <Browse.BtnGroup>
-                        <Link to="">
-                           <Browse.BtnPlay>
-                              <BsPlayFill className="btn-icons" />
+                           <Browse.BtnPlay onClick={() => handlePlay()}>
+                              <BsPlayFill className="btn-icons"/>
                               Play
                            </Browse.BtnPlay>
-                        </Link>
                         <Browse.BtnInfor>
                            <AiOutlineInfoCircle className="btn-icons" />
                            More info

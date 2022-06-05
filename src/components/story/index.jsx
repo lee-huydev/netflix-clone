@@ -7,6 +7,7 @@ import {
   Image,
   Item,
   Container,
+  Video, Animate, CardAnimate, Text
 } from "./styles/story";
 
 export default function Story({ children, direction = "row", ...restProps }) {
@@ -36,3 +37,17 @@ Story.SubTitle = function StorySubTitle({ children, ...restProps }) {
 Story.Image = function StoryImage({ children, ...restProps }) {
   return <Image {...restProps}>{children}</Image>;
 };
+Story.Video = function StoryVideo({ children, ...restProps }) {
+  return <Video {...restProps}>{children}</Video>;
+};
+Story.Animate = function StoryAnimate({ children, ...restProps }) {
+  return <Animate {...restProps}>{children}</Animate>;
+};
+Story.CardAnimate = function StoryCardAnimate({ children, ...restProps }) {
+  return <CardAnimate {...restProps}>{children}</CardAnimate>;
+};
+Story.Text = function StoryText({ children, ...restProps }) {
+  return <Text {...restProps}>{children}</Text>;
+};
+
+

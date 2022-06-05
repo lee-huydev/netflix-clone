@@ -25,6 +25,7 @@ function App() {
    }, []);
    // Allow user play video when is user login and was chosen video.
    const allowPlay = isUser() && dataPlayVideo !== null;
+   console.log(allowPlay)
    return (
       <>
          <RefeshContext.Provider value={{ refesh, setRefesh }}>

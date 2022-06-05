@@ -107,7 +107,7 @@ export const Li = styled.div`
    display: flex;
    align-items: center;
    justify-content: flex-start;
-   padding: 5px 10px;
+   padding: 0 10px;
   &:hover {
    cursor: pointer;
    text-decoration: underline;
@@ -160,6 +160,7 @@ export const ProfilesName = styled.p`
    color: #fff;
    font-size: 13px;
    font-weight: 400;
+   margin-top: 15px;
 `;
 export const SignOut = styled.button`
    background-color: transparent;

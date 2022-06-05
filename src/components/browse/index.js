@@ -15,5 +15,7 @@ Browse.MoreFrame = ({children}) => <MoreFrame>{children}</MoreFrame>
 
 Browse.TextAbout = ({children}) => <TextAbout>{children}</TextAbout>
 Browse.BtnGroup = ({children}) => <BtnGroup>{children}</BtnGroup>
-Browse.BtnPlay = ({ children ,...restProps}) => <BtnPlay {...restProps}>{children}</BtnPlay>
+Browse.BtnPlay = function BrowsePlay({ children ,...restProps}) {
+   return <BtnPlay {...restProps}>{children}</BtnPlay>
+} 
 Browse.BtnInfor = ({children}) => <BtnInfor>{children}</BtnInfor>
