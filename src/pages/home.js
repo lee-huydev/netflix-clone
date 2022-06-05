@@ -1,11 +1,10 @@
-
 import React from 'react';
 import FaqsContainer from '../containers/faqs';
 import StoryContainer from '../containers/story';
 import HeaderContainer from '../containers/header';
 import { Feature } from '../components';
+
 const Home = () => {
-   console.log(123)
    return (
       <>
          <HeaderContainer showSignin={true} sizeLogo='180px'>

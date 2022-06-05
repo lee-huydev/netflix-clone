@@ -21,7 +21,6 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
    const handleSignOut = () => {
       signOut(auth)
          .then(() => {
-            console.log('Success fully');
             localStorage.removeItem('authUser');
             localStorage.removeItem('profile')
             setRefesh(!refesh);
@@ -93,7 +92,6 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
    }, [])
    // Navigate manage profiles
    const handleManageProfiles = () => {
-      console.log('Success')
       navigate(HOME)
       localStorage.removeItem('profile')
    }
@@ -189,7 +187,7 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
                      autoPlay
                      loop
                      poster="./images/misc/dr.jpg"
-                     // src={video}
+                     src={video}
                   />
                   <Browse.MoreFrame>
                      <Browse.ImgTitle src={'./images/misc/drr.png'} />

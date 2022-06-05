@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { getAuth, signInWithEmailAndPassword } from 'firebase/auth';
 import { Form, InputPassword } from '../components';
 import { RefeshContext } from '../contexts/firebase'
+import { autoDeteteUser } from '../helpers/firebase-auth'
 import {
    SIGN_UP,
    INVALID_EMAIL,
@@ -38,6 +39,9 @@ const SignInContainer = () => {
                return navigate(VERIFIED)
             }
             localStorage.setItem('authUser', JSON.stringify(result.user))
+            // Check user has expired
+            autoDeteteUser(auth.currentUser.email, auth.currentUser)
+            // Refesh update state when login the first
             setRefesh(!refesh)
             navigate(BROWSE);
          })

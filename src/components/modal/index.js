@@ -23,7 +23,7 @@ Modal.Content = function ModalContent({ dataModal, setDataModal, profile, userCu
    const { data, img } = dataModal;
    console.log(data)
    const navigate = useNavigate()
-   // getVideo(data.genre, data.title, 'mkv').then((e) => setVideo(e));
+   getVideo(data.genre, data.title, 'mkv').then((e) => setVideo(e));
    const handleClick = () => {
       setDataModal({ ...dataModal, img: null, data: null, display: false });
       document.body.style.overflow = 'visible';
