@@ -4,6 +4,7 @@ export { default as Story } from './story';
 export { default as Faqs } from './faqs';
 export { default as Loading } from './Loading';
 export { default as Header } from './Header';
+export { default as Footer } from './footer'
 export { default as Profiles } from './Profiles';
 export { default as Feature } from './feature';
 export { default as Browse } from './browse';

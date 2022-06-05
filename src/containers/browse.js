@@ -1,4 +1,6 @@
 import React, { useContext, useEffect, useRef, useState } from 'react';
+import Fuse from 'fuse.js';
+import FooterContainer from './footer'
 import { BsPlayFill, BsPencil } from 'react-icons/bs';
 import { AiOutlineInfoCircle } from 'react-icons/ai';
 import { IoMdArrowDropdown } from 'react-icons/io';
@@ -14,6 +16,10 @@ import { getVideo } from '../helpers/get-content-firestore';
 import { useGetFilmName, getUserChild, useGetAdmin } from '../helpers/firebase-database';
 import { updateStatus } from '../helpers/firebase-auth'
 const BrowseContainer = ({ film, userCurrent, isUser }) => {
+   const [filmRender, setfilmRender] = useState(null)
+   useEffect(() => {
+     film && setfilmRender(film.film)
+   }, [film])
    const navigate = useNavigate()
    //    Log out account
    const { refesh, setRefesh } = useContext(RefeshContext);
@@ -60,6 +66,22 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
    }, []);
    // Search
    const [searchTerm, setSearchTerm] = useState('');
+   useEffect(() => {
+      if(filmRender) {
+         const option = {
+            includeScore: true,
+            // Search in `title` inside array
+            keys: ['data.title', 'data.genre', 'data.description']
+         }
+         const fuse = new Fuse(filmRender, option)
+         const result = fuse.search(searchTerm).map(({item}) => item);
+         if(filmRender.length > 0 && searchTerm.length > 3 && result.length > 0) {
+            setfilmRender(result)
+         } else {
+            setfilmRender(film.film)
+         }
+      }
+   }, [searchTerm])
    // Set data Modal in browse
    const [modal, setModal] = useState({
       display: false,
@@ -110,6 +132,7 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
       updateStatus(isUser, userCurrent.email)
    }
    return (
+      <>
       <Header bg={false}>
          <Header.Frame heightHeader="68px">
             <Header.Logo
@@ -222,8 +245,8 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
                         userCurrent={userCurrent}
                      />
                   ))}
-               {film &&
-                  film.film.map((e) => (
+               {filmRender &&
+                  filmRender.map((e) => (
                      <CardContainer
                         film={e}
                         key={e.title}
@@ -246,6 +269,8 @@ const BrowseContainer = ({ film, userCurrent, isUser }) => {
             </Modal>
          )}
       </Header>
+      {profile && <FooterContainer second showIcon={true}/>}
+      </>
    );
 };
 

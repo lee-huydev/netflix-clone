@@ -2,6 +2,7 @@ import React from 'react';
 import FaqsContainer from '../containers/faqs';
 import StoryContainer from '../containers/story';
 import HeaderContainer from '../containers/header';
+import FooterContainer from '../containers/footer'
 import { Feature } from '../components';
 
 const Home = () => {
@@ -19,6 +20,7 @@ const Home = () => {
          </HeaderContainer>
          <StoryContainer />
          <FaqsContainer />
+         <FooterContainer />
       </>
    );
 };
