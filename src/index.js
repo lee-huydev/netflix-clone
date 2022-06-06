@@ -13,7 +13,7 @@ root.render(
    <React.StrictMode>
       <GlobalStyles />
       {/* <FirebaseContext.Provider value={{ firebaseApp }}> */}
-      <BrowserRouter basename={BROWSE}>
+      <BrowserRouter basename='./'>
          <App />
       </BrowserRouter>
       {/* </FirebaseContext.Provider> */}
