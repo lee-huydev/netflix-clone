@@ -6,6 +6,18 @@
       <link rel="shortcut icon" href="./images/icons/nficon2016.ico" />
       <link rel="apple-touch-icon" href="./images/icons/nficon2016.png" />
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+      <script type="text/javascript">
+         (function(l) {
+           if (l.search[1] === '/' ) {
+             var decoded = l.search.slice(1).split('&').map(function(s) { 
+               return s.replace(/~and~/g, '&')
+             }).join('?');
+             window.history.replaceState(null, null,
+                 l.pathname.slice(0, -1) + decoded + l.hash
+             );
+           }
+         }(window.location))
+       </script>
       <title>Netflix Clone</title>
       <script
          src="https://kit.fontawesome.com/a0043d9bc2.js"
