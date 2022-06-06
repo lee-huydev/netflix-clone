@@ -31,7 +31,7 @@ function App() {
             <DataVideoContext.Provider
                value={{ dataPlayVideo, setDataPlayVideo }}
             >
-               <Routes basename={BROWSE}>
+               <Routes >
                   <Route
                      path={HOME}
                      element={
