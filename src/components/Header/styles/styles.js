@@ -41,6 +41,7 @@ export const ButtonLink = styled(RouterLink)`
    text-decoration: none;
    &:hover {
       background: #f40612;
+      color: #fff;
    }
 `;
 

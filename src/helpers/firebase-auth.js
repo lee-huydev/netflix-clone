@@ -1,4 +1,4 @@
-import { getAuth, deleteUser } from 'firebase/auth';
+import { getAuth, deleteUser, signOut } from 'firebase/auth';
 import {
    getDatabase,
    ref,
@@ -98,12 +98,11 @@ export const autoDeteteUser = (email, user) => {
                   const expireTime = childValue.timeExpire.split('/')
                   if(date === Number(expireTime[0]) && month === Number(expireTime[1]) && year === Number(expireTime[2])) {
                      remove(ref(db, `allUsers/${childKey}`));
-                     deleteUser(user)
-                        .then(() => console.log('Delete user success'))
-                        .catch(e => console.log('Error', e))
-                     localStorage.removeItem('profile')
-                     localStorage.removeItem('authUser')
-                     console.log('Success')
+                     deleteUser(user).then(() => {
+                        localStorage.removeItem('authUser');
+                        localStorage.removeItem('profile');
+                     })
+                     console.log('Success');
                   }
                }
             });
@@ -114,3 +113,25 @@ export const autoDeteteUser = (email, user) => {
       }
    );
 };
+
+export const extendTimeExpire = (email, timeExtend) => {
+   const db = getDatabase();
+   const dbRef = ref(db, `allUsers`);
+   onValue(
+      dbRef,
+      (snapshot) => {
+         if (snapshot.exists()) {
+            snapshot.forEach((childSnapshot) => {
+               const childKey = childSnapshot.key;
+               const childValue = childSnapshot.val();
+               if (childValue.email === email) {
+                  set(ref(db, `allUsers/${childKey}`), {
+                     ...childValue,
+                     timeExpire: timeExtend,
+                  });
+               }
+            });
+         }
+      }
+   );
+}

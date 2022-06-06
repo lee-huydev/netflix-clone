@@ -14,9 +14,12 @@ import { ADMIN, HOME, WATCH } from '../constants';
 import CardContainer from './card';
 import { getVideo } from '../helpers/get-content-firestore';
 import { useGetFilmName, getUserChild, useGetAdmin, writeFilmName } from '../helpers/firebase-database';
+import { autoDeteteUser } from '../helpers/firebase-auth';
 import { updateStatus } from '../helpers/firebase-auth'
 import { DataVideoContext } from '../contexts/firebase';
 const BrowseContainer = ({ film, userCurrent, isUser }) => {
+   // Check user has expired
+   userCurrent && autoDeteteUser(userCurrent.email, userCurrent)
    const [filmRender, setfilmRender] = useState(null)
    useEffect(() => {
      film && setfilmRender(film.film)
