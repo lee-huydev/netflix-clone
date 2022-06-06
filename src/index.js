@@ -6,14 +6,13 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import 'normalize.css';
 import { GlobalStyles } from './styleGlobal';
 import { BrowserRouter } from 'react-router-dom';
-import { BROWSE } from './constants';
 // import { FirebaseContext } from './contexts/firebase';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
    <React.StrictMode>
       <GlobalStyles />
       {/* <FirebaseContext.Provider value={{ firebaseApp }}> */}
-      <BrowserRouter basename='/'>
+      <BrowserRouter >
          <App />
       </BrowserRouter>
       {/* </FirebaseContext.Provider> */}
