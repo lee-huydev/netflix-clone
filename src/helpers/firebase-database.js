@@ -10,7 +10,7 @@ import {
 } from 'firebase/database';
 import { useState, useEffect } from 'react';
 
-// Function add film in database firestore
+// Function add film in database firestore users
 export const writeFilmName = (filmName, uidUser, personWatch) => {
    const db = getDatabase();
    const filmRef = ref(db, `users/${uidUser}/${personWatch}`);
@@ -35,6 +35,7 @@ export const writeFilmName = (filmName, uidUser, personWatch) => {
    };
    handelFilter();
 };
+
 // Funtion get database from store and render in browse
 export const useGetFilmName = (uidUser, personWatch) => {
    const [allFilmName, setAllFilmName] = useState('');
@@ -115,8 +116,7 @@ export const useGetTime = (uidUser, personWatch, filmName) => {
    }, []);
    return timeCurrent;
 };
-
-// Function write user child
+// Function write user child (profile) of account
 export const writeUserChild = (uidUser, displayName, id, photoURL) => {
    const db = getDatabase();
    const userChildRef = ref(db, `usersChild/${uidUser}`);
@@ -139,7 +139,7 @@ export const writeUserChild = (uidUser, displayName, id, photoURL) => {
       );
       // After if film no exits on system will be set film in system
       (await !isFail) && set(newPost, post);
-      return isFail;
+      return await isFail;
    };
    return handelFilter();
 };
@@ -161,8 +161,7 @@ export const getUserChild = (uidUser) => {
    return data;
 };
 
-// Funtion updater display name userchild
-
+// Funtion update display name userchild
 export const updateUserChild = (uid, id, displayName) => {
    const db = getDatabase();
    const dbRef = ref(db, `usersChild/${uid}`);
@@ -186,7 +185,7 @@ export const updateUserChild = (uid, id, displayName) => {
       }
    );
 };
-
+// Function delete profile
 export const deleteProfile = (uid, id) => {
    const db = getDatabase();
    const dbRef = ref(db, `usersChild/${uid}`);
@@ -208,6 +207,7 @@ export const deleteProfile = (uid, id) => {
    );
 };
 
+// Functon check user is admin
 export const useGetAdmin = (uid) => {
    const [admin, setAdmin] = useState(false);
    const db = getDatabase();
@@ -219,7 +219,7 @@ export const useGetAdmin = (uid) => {
             snapshot.forEach((childSnapshot) => {
                if (childSnapshot.exists) {
                   if (childSnapshot.key === uid) {
-                    setAdmin(childSnapshot.val().admin)
+                    setAdmin(childSnapshot.val().admin) 
                   }
                }
             });

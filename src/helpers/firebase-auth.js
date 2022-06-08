@@ -1,4 +1,4 @@
-import { getAuth, deleteUser, signOut } from 'firebase/auth';
+import { getAuth, deleteUser } from 'firebase/auth';
 import {
    getDatabase,
    ref,
@@ -9,7 +9,8 @@ import {
    onValue,
    remove,
 } from 'firebase/database';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+//  Function write all list user inside database allUsers
 export const writeListUser = () => {
    const auth = getAuth();
    const email = auth.currentUser && auth.currentUser.email;
@@ -33,7 +34,7 @@ export const writeListUser = () => {
    const newPost = push(filmRef);
    set(newPost, dataPost);
 };
-
+// Function get all list user and then render in page admin
 export const getListUser = async () => {
    const data = [];
    const dbRef = ref(getDatabase());
@@ -55,6 +56,7 @@ export const getListUser = async () => {
    return await data;
 };
 
+// Function update status user active or not active 
 export const updateStatus = (status, email) => {
    const db = getDatabase();
    const dbRef = ref(db, `allUsers`);
@@ -79,7 +81,7 @@ export const updateStatus = (status, email) => {
       }
    );
 };
-
+// Function auto delete account user when expired when user online
 export const autoDeteteUser = (email, user) => {
    const today = new Date();
    const date = today.getDate();
@@ -113,7 +115,7 @@ export const autoDeteteUser = (email, user) => {
       }
    );
 };
-
+// Function extend time expire for user when user want extend
 export const extendTimeExpire = (email, timeExtend) => {
    const db = getDatabase();
    const dbRef = ref(db, `allUsers`);

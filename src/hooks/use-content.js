@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { collection, doc, getDocs, getFirestore } from 'firebase/firestore';
+import { collection, getDocs, getFirestore } from 'firebase/firestore';
 import { firebaseApp } from '../lib/firebase';
 export default function useContent(collect) {
    const [content, setContent] = useState(null);

@@ -68,7 +68,6 @@ Card.Item = function CardItem({
 }) {
    const [img, setImg] = useState(null);
    const { setDataPlayVideo } = useContext(DataVideoContext);
-   const [video, setVideo] = useState(null);
    const [like, setLike] = useState({ like: false, dislike: false });
    const navigate = useNavigate();
    getImages(data.genre, data.img).then((e) => setImg(e));
@@ -82,11 +81,6 @@ Card.Item = function CardItem({
       document.body.style.overflow = 'visible';
       navigate(WATCH);
    };
-   // useGetFilmName(userCurrent.uid, profile.displayName)
-   // const handlePlus = () => {
-   //    console.log('Success')
-   //    updateTimeCurrentVideo(userCurrent.uid, data.title, 10, profile.displayName)
-   // }
    return (
       <Item {...restProps} className="movie">
          {img ? (

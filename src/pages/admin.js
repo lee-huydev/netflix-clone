@@ -13,10 +13,9 @@ const AdminManage = () => {
    if (state.admin === false) {
       navigate(BROWSE);
    }
-   useEffect(() => {
+   useEffect(() => { 
       getListUser().then((e) => setAllUsers(e));
    }, []);
-   console.log(allUsers);
    return (
       <HeaderContainer
          bg={false}

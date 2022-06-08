@@ -2,7 +2,7 @@ import { Routes, Route } from 'react-router-dom';
 import { SignIn, SignUp, Browse, Home, Watch, AddProfile, ManageProfiles, Verified, AdminManage } from './pages';
 import { SIGN_UP, SIGN_IN, BROWSE, HOME, WATCH, ADD_PROFILE, MANAGE_PROFILE, VERIFIED, ADMIN } from './constants';
 import { ProtectedRoute, IsUserRedirect } from './helpers/routes';
-import { useAuthListener, useWatch } from './hooks';
+import { useAuthListener } from './hooks';
 import { useEffect, useState } from 'react';
 import {
    RefeshContext,
